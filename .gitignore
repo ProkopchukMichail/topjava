@@ -4,3 +4,4 @@ target
 *.iml
 log
 *.patch
+/patches/patch07/app_ru.properties
