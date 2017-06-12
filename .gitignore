@@ -5,3 +5,4 @@ target
 log
 *.patch
 /patches/patch07/app_ru.properties
+/patches/patch08/icon-meal.png
