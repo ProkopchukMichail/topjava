@@ -72,7 +72,7 @@ public class MealRestController {
         service.update(meal, userId);
     }
 
-    @GetMapping(value = "/{between}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/between",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealWithExceed> getBetween(@RequestParam("startDate") @DateTimeFormat(iso = DATE) LocalDate startDate,
                                            @RequestParam("startTime") @DateTimeFormat(iso = TIME) LocalTime startTime,
                                            @RequestParam("endDate") @DateTimeFormat(iso = DATE)LocalDate endDate,

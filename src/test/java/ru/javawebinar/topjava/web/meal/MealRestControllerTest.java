@@ -23,4 +23,5 @@ public class MealRestControllerTest extends AbstractControllerTest{
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MealTestData.MATCHER.contentMatcher(MealTestData.MEAL1));
     }
+
 }
