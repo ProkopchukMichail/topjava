@@ -106,6 +106,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         }
     }
 
+
     private void deleteRoles(User u) {
         jdbcTemplate.update("DELETE FROM user_roles WHERE user_id=?", u.getId());
     }
