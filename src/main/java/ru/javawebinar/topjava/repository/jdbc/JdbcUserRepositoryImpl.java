@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -16,6 +17,7 @@ import ru.javawebinar.topjava.repository.UserRepository;
 
 import javax.sql.DataSource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional(readOnly = true)
@@ -82,11 +84,12 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet("SELECT * FROM user_roles");
         Map<Integer, Set<Role>> map = new HashMap<>();
-        jdbcTemplate.query("SELECT * FROM user_roles", rs -> {
-            map.computeIfAbsent(rs.getInt("user_id"), userId -> EnumSet.noneOf(Role.class))
-                    .add(Role.valueOf(rs.getString("role")));
-        });
+        while (rowSet.next()) {
+            Set<Role> roles = map.computeIfAbsent(rowSet.getInt("user_id"), userId -> EnumSet.noneOf(Role.class));
+            roles.add(Role.valueOf(rowSet.getString("role")));
+        }
         List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
         users.forEach(u -> u.setRoles(map.get(u.getId())));
         return users;
