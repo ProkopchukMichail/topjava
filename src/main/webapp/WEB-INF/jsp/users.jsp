@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
@@ -34,8 +36,6 @@
         </table>
     </div>
 </div>
-<jsp:include page="fragments/footer.jsp"/>
-
 <div class="modal fade" id="editRow">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -44,7 +44,7 @@
                 <h2 class="modal-title" id="modalTitle"></h2>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="detailsForm">
+                <form:form class="form-horizontal" id="detailsForm">
                     <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
@@ -78,19 +78,16 @@
                             </button>
                         </div>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
     </div>
 </div>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
+<jsp:include page="fragments/i18n.jsp"/>
 <script type="text/javascript">
-    var i18n = [];
     i18n["addTitle"] = '<spring:message code="users.add"/>';
     i18n["editTitle"] = '<spring:message code="users.edit"/>';
-
-    <c:forEach var='key' items='<%=new String[]{"common.deleted","common.saved","common.enabled","common.disabled","common.errorStatus"}%>'>
-    i18n['${key}'] = '<spring:message code="${key}"/>';
-    </c:forEach>
 </script>
 </html>
