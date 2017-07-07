@@ -23,6 +23,7 @@ import ru.javawebinar.topjava.Profiles;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -32,7 +33,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 abstract public class AbstractServiceTest {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractServiceTest.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractServiceTest.class);
 
     private static StringBuilder results = new StringBuilder();
 
@@ -49,7 +50,7 @@ abstract public class AbstractServiceTest {
         protected void finished(long nanos, Description description) {
             String result = String.format("%-95s %7d", description.getDisplayName(), TimeUnit.NANOSECONDS.toMillis(nanos));
             results.append(result).append('\n');
-            LOG.info(result + " ms\n");
+            log.info(result + " ms\n");
         }
     };
 
@@ -65,7 +66,7 @@ abstract public class AbstractServiceTest {
 
     @AfterClass
     public static void printResult() {
-        LOG.info("\n---------------------------------" +
+        log.info("\n---------------------------------" +
                 "\nTest                 Duration, ms" +
                 "\n---------------------------------\n" +
                 results +
@@ -81,16 +82,5 @@ abstract public class AbstractServiceTest {
         } catch (Exception e) {
             Assert.assertThat(getRootCause(e), instanceOf(exceptionClass));
         }
-    }
-
-    //  http://stackoverflow.com/a/28565320/548473
-    public static Throwable getRootCause(Throwable t) {
-        Throwable result = t;
-        Throwable cause;
-
-        while (null != (cause = result.getCause()) && (result != cause)) {
-            result = cause;
-        }
-        return result;
     }
 }

@@ -1,4 +1,3 @@
-<%@ page session="false" %>
 <%@ page isErrorPage="true" contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -12,7 +11,7 @@
     <div class="container">
         <br>
         <h4>Application error: </h4>
-        <h2>${exception.message}</h2>
+        <h2>${message==null ?  exception.message : message}</h2>
 <!--
 <c:forEach items="${exception.stackTrace}" var="stackTrace">
     ${stackTrace}
